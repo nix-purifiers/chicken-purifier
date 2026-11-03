@@ -1,0 +1,80 @@
+{
+  "dependencies": [
+    [
+      "srfi-14"
+    ],
+    [
+      "srfi-13",
+      "srfi-14",
+      "test"
+    ],
+    [
+      "test"
+    ],
+    [
+      "purifier-example",
+      "srfi-13",
+      "test"
+    ]
+  ],
+  "entries": [
+    {
+      "hash": "sha256-KXZl33sgePN41egRvThpiiIqFqz/vyAa+eS+kK/+kaU=",
+      "mirrors": [],
+      "path": "eggs/srfi-13.henrietta",
+      "url": "https://code.call-cc.org/cgi-bin/henrietta.cgi?name=srfi-13&release=5&mode=default&tests=yes&version=0.3.4"
+    },
+    {
+      "hash": "sha256-WnbD+u99F1NCnXCBv0MLgBRbT9KXY5+buY3xcWbm2NM=",
+      "mirrors": [],
+      "path": "eggs/srfi-14.henrietta",
+      "url": "https://code.call-cc.org/cgi-bin/henrietta.cgi?name=srfi-14&release=5&mode=default&tests=yes&version=0.2.1"
+    },
+    {
+      "hash": "sha256-BCmBqlboIQqZV+3Jl7htwenAIxnvEBhLKiOH6kfbfrI=",
+      "mirrors": [],
+      "path": "eggs/test.henrietta",
+      "url": "https://code.call-cc.org/cgi-bin/henrietta.cgi?name=test&release=5&mode=default&tests=yes&version=1.3"
+    }
+  ],
+  "extraInputs": [],
+  "inputs": {
+    "purifier-example.egg": {
+      "content": "((synopsis \"A small locked CHICKEN project\")\n (version \"0.1.0\")\n (dependencies srfi-13)\n (test-dependencies test)\n (components (extension purifier-example)))\n",
+      "sha256": "1163643c2e0ab1a3d37176326f43e4474d81e19607d2f8af64ed94c100e8ec25"
+    }
+  },
+  "nodes": [
+    {
+      "name": "srfi-13",
+      "path": "eggs/srfi-13.henrietta",
+      "version": "0.3.4"
+    },
+    {
+      "name": "srfi-14",
+      "path": "eggs/srfi-14.henrietta",
+      "version": "0.2.1"
+    },
+    {
+      "name": "test",
+      "path": "eggs/test.henrietta",
+      "version": "1.3"
+    }
+  ],
+  "order": [
+    "srfi-14",
+    "test",
+    "srfi-13"
+  ],
+  "project": {
+    "name": "purifier-example",
+    "version": "0.1.0"
+  },
+  "purifier": "chicken",
+  "toolVersions": {
+    "chicken": "5.4.0",
+    "gcc": "16.2.0",
+    "sdk": "3d4afda8da8a54a9fbcee76901396e633350b9f3a0a3aacf07634b7481c8a7a3"
+  },
+  "version": 1
+}

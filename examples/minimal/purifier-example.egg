@@ -1,0 +1,5 @@
+((synopsis "A small locked CHICKEN project")
+ (version "0.1.0")
+ (dependencies srfi-13)
+ (test-dependencies test)
+ (components (extension purifier-example)))
