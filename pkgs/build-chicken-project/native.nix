@@ -10,9 +10,9 @@ chicken.overrideAttrs (old: {
     (old.postPatch or "")
     + "\n"
     + ''
-      cp ${../chicken_purifier/transport.scm} purifier-transport.scm
+      cp ${../../chicken_purifier/transport.scm} purifier-transport.scm
       substituteInPlace purifier-transport.scm --replace-fail '@curl@' '${curl}'
-      python ${../chicken_purifier/patch-sdk.py}
+      python ${../../chicken_purifier/patch-sdk.py}
       ${chicken}/bin/chicken chicken-install.scm -output-file chicken-install.c -optimize-level 2 -include-path .
     '';
   postInstall =

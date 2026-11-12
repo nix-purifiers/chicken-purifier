@@ -63,7 +63,7 @@ runCommand "purified-chicken-environment"
     export CHICKEN_EGG_CACHE="$TMPDIR/eggs" CHICKEN_PURIFIER_FROZEN=1
     mkdir -p "$HOME" "$CHICKEN_INSTALL_REPOSITORY" "$CHICKEN_EGG_CACHE" sources
     sed '/^(server /d' ${nativeChicken}/share/chicken/setup.defaults > defaults
-    python3 ${../chicken_purifier/stage.py} ${manifest} ${sources} "$PWD/sources" ${nativeChicken}
+    python3 ${../../chicken_purifier/stage.py} ${manifest} ${sources} "$PWD/sources" ${nativeChicken}
     ${lib.optionalString (checked.data.order != [ ]) ''
       chicken-install -defaults "$PWD/defaults" -location "$PWD/sources" ${
         lib.escapeShellArgs (
@@ -77,7 +77,7 @@ runCommand "purified-chicken-environment"
         )
       }
     ''}
-    csi -s ${../chicken_purifier/check-installed.scm} "$out/lib/chicken/11" ${identities}
+    csi -s ${../../chicken_purifier/check-installed.scm} "$out/lib/chicken/11" ${identities}
     cp ${manifest} "$out/capture.json"
     ln -s ${sources} "$out/sources"
   ''

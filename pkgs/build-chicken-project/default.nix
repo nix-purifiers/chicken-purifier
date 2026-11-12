@@ -38,7 +38,9 @@
     ]),
 }:
 let
-  lock = purifier.checkLock (import ./read-lock.nix { inherit lib; } { inherit src lockFile; });
+  lock = purifier.checkLock (
+    import ../../lib-overlays/default/read-lock.nix { inherit lib; } { inherit src lockFile; }
+  );
   environment = import ./environment.nix {
     inherit
       lib
@@ -78,9 +80,9 @@ let
         cp -pr ${source}/. "$out/source/"
         chmod -R u+w "$out/source"
         cd "$out/source"
-        csi -s ${../chicken_purifier/check-installed.scm} "$PWD" ${identity} egg
+        csi -s ${../../chicken_purifier/check-installed.scm} "$PWD" ${identity} egg
         ${buildCommand}
-        csi -s ${../chicken_purifier/check-installed.scm} "$CHICKEN_INSTALL_REPOSITORY" ${identity}
+        csi -s ${../../chicken_purifier/check-installed.scm} "$CHICKEN_INSTALL_REPOSITORY" ${identity}
         ${lib.optionalString doCheck checkCommand}
         ${installCommand}
         for tool in csi csc; do
@@ -95,7 +97,7 @@ let
     cp -pr ${source}/. source/
     chmod -R u+w source
     cp ${lockFile} source/chicken-purifier.lock.json
-    csi -s ${../chicken_purifier/check-installed.scm} "$PWD/source" ${identity} egg
+    csi -s ${../../chicken_purifier/check-installed.scm} "$PWD/source" ${identity} egg
     tar --sort=name --mtime=@1 --owner=0 --group=0 --numeric-owner \
       -C source -cf - . | gzip -n > "$out/${lock.data.project.name}-${lock.data.project.version}.tar.gz"
   '';
