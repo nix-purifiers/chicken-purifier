@@ -74,7 +74,7 @@
   "toolVersions": {
     "chicken": "5.4.0",
     "gcc": "16.2.0",
-    "sdk": "3d4afda8da8a54a9fbcee76901396e633350b9f3a0a3aacf07634b7481c8a7a3"
+    "sdk": "c3be39cd3d657a61afd4d5a7eb8649231bcb995030fb0096a1144be0b59a2904"
   },
   "version": 1
 }
