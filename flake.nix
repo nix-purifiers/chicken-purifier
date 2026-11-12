@@ -19,14 +19,14 @@
       forAll = nixpkgs.lib.genAttrs systems;
       overlay = final: prev: {
         chicken-purifier = final.lib.makeScope final.newScope (scope: {
-          nativeChicken = scope.callPackage ./nix/native.nix { };
-          toolchain = scope.callPackage ./nix/toolchain.nix { };
-          sdkVersion = import ./nix/sdk-version.nix { nixpkgsSrc = nixpkgs; };
-          cli = scope.callPackage ./nix/cli.nix {
+          nativeChicken = scope.callPackage ./pkgs/build-chicken-project/native.nix { };
+          toolchain = scope.callPackage ./pkgs/build-chicken-project/toolchain.nix { };
+          sdkVersion = import ./pkgs/build-chicken-project/sdk-version.nix { nixpkgsSrc = nixpkgs; };
+          cli = scope.callPackage ./pkgs/cli/default.nix {
             nixpkgsSrc = nixpkgs;
             purifierSrc = purifier;
           };
-          buildChickenProject = scope.callPackage ./nix/build-project.nix {
+          buildChickenProject = scope.callPackage ./pkgs/build-chicken-project/default.nix {
             purifier = import (purifier + "/nix/lib") { inherit (final) lib; };
           };
         });
@@ -45,7 +45,7 @@
         cli = self.packages.${system}.default;
         sdk = (pkgsFor system).chicken-purifier.toolchain;
       });
-      lib.chicken-purifier.readLock = import ./nix/read-lock.nix { lib = nixpkgs.lib; };
+      lib.chicken-purifier = (nixpkgs.lib.extend (import ./lib-overlays/default)).chicken-purifier;
       apps = forAll (system: {
         default = {
           type = "app";

@@ -16,14 +16,14 @@
 stdenvNoCC.mkDerivation {
   pname = "chicken-purifier";
   version = "0.1.0";
-  src = ../.;
+  src = ../..;
   nativeBuildInputs = [ makeWrapper ];
   dontBuild = true;
   installPhase = ''
     mkdir -p "$out/bin" "$out/lib/chicken-purifier"
-    cp -r chicken_purifier nix "$out/lib/chicken-purifier/"
+    cp -r chicken_purifier pkgs lib-overlays "$out/lib/chicken-purifier/"
     install -m755 bin/chicken-purifier "$out/bin/chicken-purifier"
-    substituteInPlace "$out/lib/chicken-purifier/nix/realize.nix" \
+    substituteInPlace "$out/lib/chicken-purifier/pkgs/build-chicken-project/realize.nix" \
       --replace-fail '@nixpkgs@' '${nixpkgsSrc}' \
       --replace-fail '@purifier@' '${purifierSrc}'
     wrapProgram "$out/bin/chicken-purifier" \
