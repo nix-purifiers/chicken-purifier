@@ -83,6 +83,48 @@ It exposes evaluation-known `packages`, `tests`, `release` and `fetches`.
 `checkCommand`, `installCommand` or `doCheck` for the project's native workflow.
 The default test command is `csi -s tests/run.scm`.
 
+## Embedded native libraries
+
+`embeddedLibraries` compiles caller-authored Scheme and C host sources with the
+selected native `csc -embedded -shared`. Ordinary egg extension files are not
+treated as foreign libraries. For example:
+
+```nix
+embeddedLibraries.example = {
+  source = "embedded.scm";
+  hostSources = [ "host.c" ];
+  header = "embedded.h";
+  initializeSymbol = "purifier_initialize";
+  exports = [ "purifier_answer" ];
+};
+```
+
+The host implementation initializes the original CHICKEN runtime and runs the
+Scheme toplevel until its authored `return-to-host`. The Scheme source defines
+its public callbacks with native `define-external`. The purifier supplies no
+generated initialization functions or inferred C signatures. It verifies the
+actual embedded entry point, declared symbols and selected linked runtime.
+
+The result exposes `projections.native`, `projections.python-ffi` and
+`projections.java-ffi`, including a catalog, lazy ctypes loader and Java library
+path arguments. Installed caller headers remain under `include/<name>`.
+Before initialization, set `CHICKEN_REPOSITORY_PATH` to the catalog target's
+`repository` value so native imports resolve the project's installed eggs and
+captured dependencies.
+
+The host must choose a CHICKEN nursery size compatible with its native thread's
+available stack. The tested host selects 64 KiB explicitly: the SDK default
+crashed in the Java FFM consumer, while that explicit size passed its repeated
+callbacks and garbage collections. This is a tested fixture setting, not a
+universal stack-size guarantee. Java validation uses JDK 21's preview FFM API.
+
+Initialize once, then invoke callbacks on that same native thread. Keep the
+library loaded for the process lifetime. Foreign threads, unloading, multiple
+independent embedded runtimes and calling before initialization are outside
+this API's contract. Callers provide matching C signatures and handle ownership
+of their API's data. C, ctypes, CFFI and Java FFM consumers pass on the native
+x86_64 Linux host; ARM support still requires its native CI execution.
+
 ## Credits
 
 The purifier idea was inspired by nixcloud's
