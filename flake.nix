@@ -60,6 +60,16 @@
           build = pkgs.chicken-purifier.buildChickenProject { src = ./examples/minimal; };
         in
         {
+          embedded = import ./tests/embedded-consumer.nix {
+            inherit pkgs;
+            build = pkgs.chicken-purifier.buildChickenProject;
+          };
+          embedded-revision = import ./tests/embedded-consumer.nix {
+            inherit pkgs;
+            build = pkgs.chicken-purifier.buildChickenProject;
+            src = ./examples/embedded-revision;
+            expected = 43;
+          };
           inherit (build.packages) environment project;
           release = build.release;
           cli = self.packages.${system}.default;
